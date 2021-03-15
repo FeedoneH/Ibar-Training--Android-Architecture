@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/newsFragment2">
+
+
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.example.newsmvvmapp.InfoFragment"
+        android:label="fragment_info"
+        tools:layout="@layout/fragment_info" >
+        <argument
+            android:name="selected_article"
+            app:argType="com.example.newsmvvmapp.data.model.Article" />
+    </fragment>
+    <fragment
+        android:id="@+id/saved_news"
+        android:name="com.example.newsmvvmapp.SavedNewsFragment"
+        android:label="fragment_saved_news"
+        tools:layout="@layout/fragment_saved_news" >
+        <action
+            android:id="@+id/action_saved_news_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newsFragment2"
+        android:name="com.example.newsmvvmapp.NewsFragment"
+        android:label="fragment_news"
+        tools:layout="@layout/fragment_news" >
+        <action
+            android:id="@+id/action_newsFragment2_to_infoFragment"
+            app:destination="@id/infoFragment" />
+    </fragment>
+</navigation>
