@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         mainActivityViewModel.getBooks(categoryId).observe(this, new Observer<List<Book>>() {
             @Override
             public void onChanged(@Nullable List<Book> books) {
-                books = (ArrayList<Book>) books;
+                booksList = (ArrayList<Book>) books;
                 loadRecyclerView();
             }
         });

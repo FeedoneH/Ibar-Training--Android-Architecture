@@ -38,8 +38,7 @@
             android:id="@+id/secondary_layout"
             layout="@layout/content_main"
             bind:secondaryClickHandler="@{clickHandler}"
-            bind:secondarySpinnerAdapter="@{spinnerAdapter}"
-            />
+            bind:secondarySpinnerAdapter="@{spinnerAdapter}" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

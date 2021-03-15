@@ -2,6 +2,7 @@ package com.example.news_java.model;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -11,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(entities = {Category.class, Book.class}, version = 1)
 abstract public class BookDatabase extends RoomDatabase {
-
+    private static final String TAG = "BookDatabase";
 
     public abstract CategoryDAO categoryDAO();
 
@@ -50,6 +51,8 @@ abstract public class BookDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
+
+            Log.i(TAG, "doInBackground: isrunning");
 
             Category category1=new Category();
             category1.setCategoryName("Text Books");
