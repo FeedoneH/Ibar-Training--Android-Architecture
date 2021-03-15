@@ -6,17 +6,19 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
+
 import com.example.news_java.databinding.ActivityAddAndEditBinding;
 import com.example.news_java.model.Book;
 
 public class AddAndEditActivity extends AppCompatActivity {
 
     private Book book;
-    public static final String BOOK_ID="bookId";
-    public static final String BOOK_NAME="bookName";
-    public static final String UNIT_PRICE="unitPrice";
+    public static final String BOOK_ID = "bookId";
+    public static final String BOOK_NAME = "bookName";
+    public static final String UNIT_PRICE = "unitPrice";
     private ActivityAddAndEditBinding activityAddAndEditBinding;
     private AddAndEditActivityClickHandlers addAndEditActivityClickHandlers;
 
@@ -26,44 +28,45 @@ public class AddAndEditActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_and_edit);
 
-
-        book=new Book();
-        activityAddAndEditBinding= DataBindingUtil.setContentView(this,R.layout.activity_add_and_edit);
+        book = new Book();
+        activityAddAndEditBinding = DataBindingUtil.setContentView(this, R.layout.activity_add_and_edit);
         activityAddAndEditBinding.setBook(book);
 
         addAndEditActivityClickHandlers = new AddAndEditActivityClickHandlers(this);
         activityAddAndEditBinding.setClickHandler(addAndEditActivityClickHandlers);
 
-        Intent intent=getIntent();
-        if(intent.hasExtra(BOOK_ID)){
-            Log.i("BookIdTest"," at 3 id is "+intent.getIntExtra(BOOK_ID,0));
-             setTitle("Edit Book");
-             book.setBookName(intent.getStringExtra(BOOK_NAME));
-             book.setUnitPrice(intent.getStringExtra(UNIT_PRICE));
+        Intent intent = getIntent();
 
-        }else{
-             setTitle("Add New Book");
+        if (intent.hasExtra(BOOK_ID)) {
+            Log.i("BookIdTest", " at 3 id is " + intent.getIntExtra(BOOK_ID, 0));
+            setTitle("Edit Book");
+            book.setBookName(intent.getStringExtra(BOOK_NAME));
+            book.setUnitPrice(intent.getStringExtra(UNIT_PRICE));
 
+        } else {
+            setTitle("Add New Book");
         }
 
 
     }
 
-    public class AddAndEditActivityClickHandlers{
+    public class AddAndEditActivityClickHandlers {
         Context context;
 
         public AddAndEditActivityClickHandlers(Context context) {
             this.context = context;
         }
 
-        public void onSubmitButtonClicked(View view){
-            if(book.getBookName()==null){
-                Toast.makeText(context,"Name field cannot be empty", Toast.LENGTH_LONG).show();
-            }else{
-                Intent intent=new Intent();
-                intent.putExtra(BOOK_NAME,book.getBookName());
-                intent.putExtra(UNIT_PRICE,book.getUnitPrice());
-                setResult(RESULT_OK,intent);
+        public void onSubmitButtonClicked(View view) {
+            if (book.getBookName() == null) {
+                Toast.makeText(context, "Name field cannot be empty", Toast.LENGTH_LONG).show();
+            } else {
+
+                Intent intent = new Intent();
+
+                intent.putExtra(BOOK_NAME, book.getBookName());
+                intent.putExtra(UNIT_PRICE, book.getUnitPrice());
+                setResult(RESULT_OK, intent);
                 finish();
             }
 

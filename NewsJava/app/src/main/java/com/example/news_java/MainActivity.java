@@ -58,17 +58,14 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivityViewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        mainActivityViewModel.getAllcategories().observe(this, new Observer<List<Category>>() {
-            @Override
-            public void onChanged(@Nullable List<Category> categories) {
+        mainActivityViewModel.getAllcategories().observe(this, categories -> {
 
-                categoriesList = (ArrayList<Category>) categories;
-                for (Category c : categories) {
+            categoriesList = (ArrayList<Category>) categories;
+            for (Category c : categories) {
 
-                    Log.i("MyTAG", c.getCategoryName());
-                }
-                showOnSpinner();
+                Log.i("MyTAG", c.getCategoryName());
             }
+            showOnSpinner();
         });
 
     }
@@ -103,17 +100,14 @@ public class MainActivity extends AppCompatActivity {
         booksRecyclerView.setAdapter(booksAdapter);
 
         booksAdapter.setBooks(booksList);
-        booksAdapter.setListener(new BooksAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(Book book) {
-                selectedBookId = book.getBookID();
+        booksAdapter.setListener(book -> {
+            selectedBookId = book.getBookID();
 
-                Intent intent = new Intent(MainActivity.this, AddAndEditActivity.class);
-                intent.putExtra(AddAndEditActivity.BOOK_ID, selectedBookId);
-                intent.putExtra(AddAndEditActivity.BOOK_NAME, book.getBookName());
-                intent.putExtra(AddAndEditActivity.UNIT_PRICE, book.getUnitPrice());
-                startActivityForResult(intent, EDIT_BOOK_REQUEST_CODE);
-            }
+            Intent intent = new Intent(MainActivity.this, AddAndEditActivity.class);
+            intent.putExtra(AddAndEditActivity.BOOK_ID, selectedBookId);
+            intent.putExtra(AddAndEditActivity.BOOK_NAME, book.getBookName());
+            intent.putExtra(AddAndEditActivity.UNIT_PRICE, book.getUnitPrice());
+            startActivityForResult(intent, EDIT_BOOK_REQUEST_CODE);
         });
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
             @Override
@@ -171,4 +165,28 @@ public class MainActivity extends AppCompatActivity {
             loadBooksArrayList(selectedCategory.getId());
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         int selectedCategoryId = selectedCategory.getId();
+        Log.i("addedit", "onActivityResult: activity result");
+         if(requestCode==ADD_BOOK_REQUEST_CODE && resultCode==RESULT_OK){
+             Book book=new Book();
+             book.setCategoryId(selectedCategoryId);
+             book.setBookName(data.getStringExtra(AddAndEditActivity.BOOK_NAME));
+             book.setUnitPrice(data.getStringExtra(AddAndEditActivity.UNIT_PRICE));
+             mainActivityViewModel.insertBook(book);
+
+         }
+         else if(requestCode==EDIT_BOOK_REQUEST_CODE && resultCode==RESULT_OK){
+             Book book=new Book();
+             book.setCategoryId(selectedCategoryId);
+             book.setBookID(selectedBookId);
+             book.setBookName(data.getStringExtra(AddAndEditActivity.BOOK_NAME));
+             book.setUnitPrice(data.getStringExtra(AddAndEditActivity.UNIT_PRICE));
+             mainActivityViewModel.updateBook(book);
+         }
+    }
+
 }
