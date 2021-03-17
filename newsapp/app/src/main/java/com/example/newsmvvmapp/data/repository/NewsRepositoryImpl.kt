@@ -3,12 +3,16 @@ package com.example.newsmvvmapp.data.repository
 import com.example.newsmvvmapp.data.model.APIResponse
 import com.example.newsmvvmapp.data.model.Article
 import com.example.newsmvvmapp.data.repository.datasource.NewsRemoteDataSource
+import com.example.newsmvvmapp.data.repository.datasource.SavedNewsLocalDBSource
 import com.example.newsmvvmapp.data.util.Resource
 import com.example.newsmvvmapp.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
-class NewsRepositoryImpl(private val newsRemoteDataSource: NewsRemoteDataSource) : NewsRepository {
+class NewsRepositoryImpl(
+    private val newsRemoteDataSource: NewsRemoteDataSource,
+    private val savedNewsLocalDBSource: SavedNewsLocalDBSource
+) : NewsRepository {
     override suspend fun getNewsHeadlines(country: String, page: Int): Resource<APIResponse> {
         return convertResponseToResource(
             newsRemoteDataSource.getNewsHeadlinesFromAPI(
@@ -42,14 +46,14 @@ class NewsRepositoryImpl(private val newsRemoteDataSource: NewsRemoteDataSource)
     }
 
     override suspend fun deleteSavedNews(article: Article) {
-        TODO("Not yet implemented")
+        return savedNewsLocalDBSource.deleteSavedNews(article)
     }
 
     override suspend fun saveNews(article: Article) {
-        TODO("Not yet implemented")
+        return savedNewsLocalDBSource.insertSavedNews(article)
     }
 
-    override fun getSavedNews(): Flow<List<Article>> {
-        TODO("Not yet implemented")
+    override suspend fun getSavedNews(): List<Article> {
+        return savedNewsLocalDBSource.selectAllSavedNews()
     }
 }

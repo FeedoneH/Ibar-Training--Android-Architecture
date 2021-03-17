@@ -10,6 +10,7 @@ import android.widget.AbsListView
 import android.widget.Toast
 import android.widget.SearchView
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsmvvmapp.data.model.Article
@@ -184,6 +185,8 @@ class NewsFragment : Fragment() {
             layoutManager = LinearLayoutManager(activity)
             addOnScrollListener(this@NewsFragment.onScrollListener)
         }
+
+
     }
 
     private fun showProgressBar() {
